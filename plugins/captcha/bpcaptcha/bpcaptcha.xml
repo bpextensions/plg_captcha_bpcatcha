@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="captcha" method="upgrade">
+    
+	<name>plg_captcha_bpcaptcha</name>
+	<author>${author.name}</author>
+	<creationDate>${build.date}</creationDate>
+	<copyright>(C) ${build.year} ${author.name}. All rights reserved.</copyright>
+	<license>${license.name}</license>
+	<authorEmail>${author.email}</authorEmail>
+	<authorUrl>${author.url}</authorUrl>
+	<version>${version}</version>
+	<description>PLG_CAPTCHA_BPCAPTCHA_XML_DESCRIPTION</description>
+    
+	<files>
+		<folder plugin="bpcaptcha">services</folder>
+		<folder>src</folder>
+		<folder>forms</folder>
+		<folder>layouts</folder>
+	</files>
+
+	<namespace path="src">BPExtensions\Plugin\Captcha\BPCaptcha</namespace>
+    
+	<languages folder="language">
+		<language tag="pl-PL">pl-PL/plg_captcha_bpcaptcha.ini</language>
+		<language tag="pl-PL">pl-PL/plg_captcha_bpcaptcha.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="questions" type="subform"
+					   formsource="plugins/captcha/bpcaptcha/forms/questions.xml"
+					   multiple="true"
+					   min="3"
+					   layout="joomla.form.field.subform.repeatable-table"
+					   label="PLG_CAPTCHA_BPCAPTCHA_FIELD_FIELD_QUESTIONS_LABEL"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+    
+</extension>

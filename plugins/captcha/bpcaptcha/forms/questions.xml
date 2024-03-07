@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+
+    <field
+            name="language"
+            type="language"
+            required="true"
+            label="PLG_CAPTCHA_BPCAPTCHA_FIELD_LANGUAGE_LABEL"
+    />
+
+    <field
+            name="question"
+            type="text"
+            required="true"
+            label="PLG_CAPTCHA_BPCAPTCHA_FIELD_QUESTION_LABEL"
+    />
+
+    <field
+            name="answers"
+            type="textarea"
+            required="true"
+            label="PLG_CAPTCHA_BPCAPTCHA_FIELD_ANSWERS_LABEL"
+            description="PLG_CAPTCHA_BPCAPTCHA_FIELD_ANSWERS_DESC"
+    />
+
+    <field
+            name="hint"
+            type="text"
+            label="PLG_CAPTCHA_BPCAPTCHA_FIELD_HINT_LABEL"
+    />
+
+</form>

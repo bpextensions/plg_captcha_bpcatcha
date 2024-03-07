@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  joomla:
+    container_name: bptoolbar_joomla
+    image: joomla:4
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+    environment:
+      JOOMLA_DB_HOST: mysql
+      JOOMLA_DB_USER: root
+      JOOMLA_DB_PASSWORD: root
+      JOOMLA_DB_NAME: joomla_db
+
+  mysql:
+    container_name: bptoolbar_database
+    image: mysql:5.6
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: joomla_db

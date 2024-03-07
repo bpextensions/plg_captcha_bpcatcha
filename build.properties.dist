@@ -1,0 +1,9 @@
+package=BPExtensions.Plugin.BPCaptcha
+copyrights=Grupa Best Sp. z o.o.
+license.name=GNU General Public License version 3 or later
+license.url=LICENSE.txt
+build.version=
+build.release=
+author.name=BP Extensions
+author.email=contact@bpextensions.com
+author.url=https://bpextensions.com

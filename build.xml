@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="BP Captcha" default="build:clean" basedir="." description="BP Captcha build task">
+
+    <property file="./build.properties"/>
+
+    <php expression="date('F Y')" returnProperty="build.date"/>
+    <php expression="date('Y')" returnProperty="build.year"/>
+
+    <target name="test">
+        <echo msg="Test each extension before build"/>
+        <phingcall target="test:compatibility"/>
+    </target>
+
+    <target name="test:compatibility">
+        <echo msg="Testing PHP 7.2.5 - 8.x Compatibility"/>
+        <exec command="composer test:compatibility" checkreturn="true"/>
+    </target>
+
+    <target name="build:plg_captcha_bpcaptcha">
+        <echo msg="Creating plugin directory"/>
+        <mkdir dir="./.build/plg_captcha_bpcaptcha"/>
+
+        <echo msg="Building plugin installer"/>
+        <copy todir="./.build/plg_captcha_bpcaptcha">
+            <fileset dir="./plugins/captcha/bpcaptcha">
+                <include name="**/*"/>
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="${" endtoken="}">
+                    <token key="build.date" value="${build.date}" />
+                    <token key="build.year" value="${build.year}" />
+                    <token key="copyrights" value="${copyrights}" />
+                    <token key="license.name" value="${license.name}" />
+                    <token key="license.url" value="${license.url}" />
+                    <token key="version" value="${build.version}"/>
+                    <token key="release" value="${build.release}"/>
+                    <token key="package" value="${package}" />
+                    <token key="author.url" value="${author.url}" />
+                    <token key="author.name" value="${author.name}" />
+                    <token key="author.email" value="${author.email}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <echo msg="Creating plugin zipfile." />
+        <zip destfile="./.build/plg_captcha_bpcaptcha_v${build.version}_${build.release}.zip" basedir="./.build/plg_captcha_bpcaptcha"/>
+    </target>
+
+    <target name="build">
+        <phingcall target="test"/>
+
+        <echo msg="Creating build directory ./.build"/>
+        <mkdir dir="./.build"/>
+
+        <echo msg="Building plg_captcha_bpcaptcha"/>
+        <phingcall target="build:plg_captcha_bpcaptcha"/>
+
+    </target>
+
+    <target name="clean">
+        <echo msg="Removing build directory ./.build if exists" />
+        <delete dir="./.build" includeemptydirs="true"/>
+    </target>
+
+    <target name="build:clean">
+        <echo msg="Creating a clean build." />
+        <phingcall target="clean"/>
+        <phingcall target="build"/>
+    </target>
+
+</project>
