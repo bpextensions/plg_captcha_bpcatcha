@@ -8,11 +8,7 @@
  * @author      ${author.name}
  */
 
-namespace BPExtensions\Plugin\Captcha\BPCaptcha\Extension;
-
-use Exception;
-use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Application\CMSWebApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CaptchaField;
 use Joomla\CMS\Language\Text;
@@ -22,7 +18,6 @@ use Joomla\CMS\User\User;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Input\Input;
 use Joomla\Session\SessionInterface;
-use RuntimeException;
 
 
 defined('_JEXEC') or die;
@@ -30,7 +25,7 @@ defined('_JEXEC') or die;
 /**
  * A Joomla! 4 system plugin that display management toolbar.
  */
-class BPCaptchaPlugin extends CMSPlugin
+class PlgCaptchaBpcaptcha extends CMSPlugin
 {
 
     protected const LAYOUT_PATH = JPATH_PLUGINS.'/captcha/bpcaptcha/layouts';
@@ -47,7 +42,7 @@ class BPCaptchaPlugin extends CMSPlugin
     /**
      * Application.
      *
-     * @var CMSApplication
+     * @var SiteApplication
      */
     public $app;
 
@@ -106,15 +101,25 @@ class BPCaptchaPlugin extends CMSPlugin
      */
     protected $answers;
 
-    public function __construct(&$subject, $config = [], ?SessionInterface $session = null)
+    /**
+     * @var string
+     */
+    protected $currentLanguage;
+
+    public function __construct(&$subject, $config = [])
     {
         parent::__construct($subject, $config);
 
         // Add required variables.
         $this->user  = $this->app->getIdentity();
         $this->input = $this->app->input;
-        $this->session = $session;
+        $this->session = Factory::getSession();
         $this->questions = (array)$this->params->get('questions', []);
+        $this->currentLanguage = Factory::getApplication()->getLanguage()->getTag();
+
+        if( empty($this->questions) ) {
+            throw new RuntimeException(Text::sprintf('PLG_SYSTEM_BPCATCHA_ERROR_NO_QUESTIONS', $this->currentLanguage));
+        }
     }
 
     /**
@@ -127,22 +132,21 @@ class BPCaptchaPlugin extends CMSPlugin
      */
     public function onInit(string $id = 'bpcaptcha_1'): bool
     {
-        if (!$this->app instanceof CMSWebApplicationInterface) {
+        if (!$this->app instanceof SiteApplication) {
             return false;
         }
-
-        $currentLanguage = Factory::getApplication()->getLanguage()->getTag();
 
         // Find what questions can be used on this language
         $selected_questions = [];
         foreach( $this->questions as $question ) {
-            if( $question->language==='*' || $question->language===$currentLanguage ) {
+            if( $question->language==='*' || $question->language===$this->currentLanguage ) {
                 $selected_questions[] = $question;
             }
         }
 
+
         if( empty($selected_questions) ) {
-            throw new RuntimeException(Text::sprintf('PLG_SYSTEM_BPCATCHA_ERROR_NO_QUESTIONS', $currentLanguage));
+            throw new RuntimeException(Text::sprintf('PLG_SYSTEM_BPCATCHA_ERROR_NO_QUESTIONS', $this->currentLanguage));
         }
 
         // Select question
@@ -176,7 +180,6 @@ class BPCaptchaPlugin extends CMSPlugin
         $layoutParams = ['name' =>$name, 'id' =>$id, 'class' =>$class, 'question' =>$this->question, 'answers' =>$this->answers, 'hint' =>$this->hint];
 
         $this->storeFieldChallenge($name, $this->answers);
-
 
         return LayoutHelper::render('bpcaptcha.field', $layoutParams, self::LAYOUT_PATH);
     }

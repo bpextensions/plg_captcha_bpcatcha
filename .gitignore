@@ -28,3 +28,4 @@ build.properties
 !webpack.config.js
 !/test
 !/test/*.yml
+!/docker-compose.yml

@@ -12,14 +12,11 @@
 	<description>PLG_CAPTCHA_BPCAPTCHA_XML_DESCRIPTION</description>
     
 	<files>
-		<folder plugin="bpcaptcha">services</folder>
-		<folder>src</folder>
+		<filename plugin="bpcaptcha">bpcaptcha.php</filename>
 		<folder>forms</folder>
 		<folder>layouts</folder>
 	</files>
 
-	<namespace path="src">BPExtensions\Plugin\Captcha\BPCaptcha</namespace>
-    
 	<languages folder="language">
 		<language tag="pl-PL">pl-PL/plg_captcha_bpcaptcha.ini</language>
 		<language tag="pl-PL">pl-PL/plg_captcha_bpcaptcha.sys.ini</language>

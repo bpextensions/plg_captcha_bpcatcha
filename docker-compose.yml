@@ -1,8 +1,8 @@
 version: '3.8'
-name: plg_captcha_bpcaptcha_j3_test
+name: plg_captcha_bpcaptcha_j3
 services:
   joomla:
-    container_name: bpcaptcha_j3_joomla_test
+    container_name: bpcaptcha_j3_joomla
     image: joomla:3
     restart: unless-stopped
     ports:
@@ -14,9 +14,11 @@ services:
       JOOMLA_DB_USER: root
       JOOMLA_DB_PASSWORD: root
       JOOMLA_DB_NAME: joomla_db
+    volumes:
+      - ./plugins/captcha/bpcaptcha:/var/www/html/plugins/captcha/bpcaptcha
 
   mysql:
-    container_name: bpcaptcha_j3_database_test
+    container_name: bpcaptcha_j3_database
     image: mysql:5.6
     restart: unless-stopped
     environment:

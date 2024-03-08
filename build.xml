@@ -43,7 +43,7 @@
         </copy>
 
         <echo msg="Creating plugin zipfile." />
-        <zip destfile="./.build/plg_captcha_bpcaptcha_v${build.version}_${build.release}.zip" basedir="./.build/plg_captcha_bpcaptcha"/>
+        <zip destfile="./.build/plg_captcha_bpcaptcha_v${build.version}_${build.release}_joomla3.zip" basedir="./.build/plg_captcha_bpcaptcha"/>
     </target>
 
     <target name="build">
